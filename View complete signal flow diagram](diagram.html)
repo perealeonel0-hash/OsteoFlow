@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Osteoflow — Signal Flow</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0D1117; font-family: 'Courier New', monospace; padding: 40px; }
+
+.container {
+max-width: 900px;
+margin: 0 auto;
+}
+
+.title {
+text-align: center;
+color: #E6EDF3;
+font-size: 22px;
+font-weight: bold;
+letter-spacing: 3px;
+margin-bottom: 6px;
+}
+
+.subtitle {
+text-align: center;
+color: #7D8590;
+font-size: 12px;
+letter-spacing: 2px;
+margin-bottom: 40px;
+}
+
+.flow {
+display: flex;
+flex-direction: column;
+gap: 0;
+}
+
+.step {
+display: flex;
+align-items: stretch;
+gap: 16px;
+}
+
+.step-left {
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 48px;
+flex-shrink: 0;
+}
+
+.step-number {
+width: 48px;
+height: 48px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 16px;
+font-weight: bold;
+flex-shrink: 0;
+z-index: 1;
+}
+
+.step-line {
+width: 2px;
+flex: 1;
+min-height: 20px;
+margin: 0 auto;
+}
+
+.step-content {
+flex: 1;
+padding: 14px 18px 24px 18px;
+border-radius: 8px;
+margin-bottom: 0;
+}
+
+.step-title {
+font-size: 13px;
+font-weight: bold;
+letter-spacing: 2px;
+margin-bottom: 10px;
+}
+
+.step-items {
+display: flex;
+flex-direction: column;
+gap: 5px;
+}
+
+.item {
+font-size: 12px;
+color: #C9D1D9;
+display: flex;
+align-items: baseline;
+gap: 8px;
+}
+
+.item-arrow {
+color: #7D8590;
+flex-shrink: 0;
+}
+
+.item-key {
+font-weight: bold;
+}
+
+.item-val {
+color: #7D8590;
+}
+
+.highlight {
+color: #F0F6FC;
+font-weight: bold;
+}
+
+/* Step colors */
+.s1 .step-number { background: #1C3A2E; color: #3FB950; border: 2px solid #3FB950; }
+.s1 .step-line { background: #3FB950; opacity: 0.3; }
+.s1 .step-content { background: #0D2818; border: 1px solid #1C3A2E; }
+.s1 .step-title { color: #3FB950; }
+
+.s2 .step-number { background: #1A2E3A; color: #58A6FF; border: 2px solid #58A6FF; }
+.s2 .step-line { background: #58A6FF; opacity: 0.3; }
+.s2 .step-content { background: #0D1F2E; border: 1px solid #1A2E3A; }
+.s2 .step-title { color: #58A6FF; }
+
+.s3 .step-number { background: #2E1A3A; color: #BC8CFF; border: 2px solid #BC8CFF; }
+.s3 .step-line { background: #BC8CFF; opacity: 0.3; }
+.s3 .step-content { background: #1E0D2E; border: 1px solid #2E1A3A; }
+.s3 .step-title { color: #BC8CFF; }
+
+.s4 .step-number { background: #3A2E1A; color: #E3B341; border: 2px solid #E3B341; }
+.s4 .step-line { background: #E3B341; opacity: 0.3; }
+.s4 .step-content { background: #2E1E0D; border: 1px solid #3A2E1A; }
+.s4 .step-title { color: #E3B341; }
+
+.s5 .step-number { background: #3A1A1A; color: #F85149; border: 2px solid #F85149; }
+.s5 .step-line { background: #F85149; opacity: 0.3; }
+.s5 .step-content { background: #2E0D0D; border: 1px solid #3A1A1A; }
+.s5 .step-title { color: #F85149; }
+
+.s6 .step-number { background: #1A3A2E; color: #56D364; border: 2px solid #56D364; }
+.s6 .step-line { background: #56D364; opacity: 0.3; }
+.s6 .step-content { background: #0D2818; border: 1px solid #1A3A2E; }
+.s6 .step-title { color: #56D364; }
+
+.s7 .step-number { background: #1A2A3A; color: #79C0FF; border: 2px solid #79C0FF; }
+.s7 .step-line { background: none; }
+.s7 .step-content { background: #0D1A2E; border: 1px solid #1A2A3A; }
+.s7 .step-title { color: #79C0FF; }
+
+.learn-badge {
+display: inline-block;
+background: #79C0FF22;
+border: 1px solid #79C0FF;
+color: #79C0FF;
+font-size: 10px;
+padding: 2px 8px;
+border-radius: 4px;
+letter-spacing: 1px;
+margin-top: 8px;
+}
+
+.footer {
+text-align: center;
+color: #7D8590;
+font-size: 10px;
+margin-top: 32px;
+letter-spacing: 1px;
+}
+
+.footer a { color: #58A6FF; text-decoration: none; }
+</style>
+
+</head>
+<body>
+<div class="container">
+  <div class="title">OSTEOFLOW</div>
+  <div class="subtitle">COMPLETE SIGNAL FLOW — BODY TO CHIP TO BODY</div>
+
+  <div class="flow">
+
+```
+<!-- STEP 1 -->
+<div class="step s1">
+  <div class="step-left">
+    <div class="step-number">1</div>
+    <div class="step-line"></div>
+  </div>
+  <div class="step-content">
+    <div class="step-title">SENSORS — BODY STATE</div>
+    <div class="step-items">
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">pH</span><span class="item-val">= 6.8</span><span class="highlight">→ 1.8V</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Temperature</span><span class="item-val">= 37.8°C</span><span class="highlight">→ 2.1V</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Cell activity</span><span class="item-val">= high</span><span class="highlight">→ 2.3V</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2 -->
+<div class="step s2">
+  <div class="step-left">
+    <div class="step-number">2</div>
+    <div class="step-line"></div>
+  </div>
+  <div class="step-content">
+    <div class="step-title">HfO₂ MEMRISTOR SYNAPSES</div>
+    <div class="step-items">
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">I₁</span><span class="item-val">= 1.8V / 50kΩ =</span><span class="highlight">36 µA</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">I₂</span><span class="item-val">= 2.1V / 30kΩ =</span><span class="highlight">70 µA</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">I₃</span><span class="item-val">= 2.3V / 40kΩ =</span><span class="highlight">57.5 µA</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">TOTAL at neuron #200</span><span class="highlight">= 163.5 µA</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="step s3">
+  <div class="step-left">
+    <div class="step-number">3</div>
+    <div class="step-line"></div>
+  </div>
+  <div class="step-content">
+    <div class="step-title">BAYESIAN NEURON — DECISION</div>
+    <div class="step-items">
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Threshold</span><span class="item-val">= 150 µA</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">163.5 µA > 150 µA?</span><span class="highlight">→ YES</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Neuron fires</span><span class="highlight">→ 3.3V pulse</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 4 -->
+<div class="step s4">
+  <div class="step-left">
+    <div class="step-number">4</div>
+    <div class="step-line"></div>
+  </div>
+  <div class="step-content">
+    <div class="step-title">GRAPHENE ELECTRODE — SIGNAL TRANSPORT</div>
+    <div class="step-items">
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Speed</span><span class="item-val">≈ speed of light in conductor</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Reaches actuator #3</span><span class="highlight">in 0.1 ns</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">No signal loss</span><span class="item-val">— covalent Hf-C bonding maintains interface</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 5 -->
+<div class="step s5">
+  <div class="step-left">
+    <div class="step-number">5</div>
+    <div class="step-line"></div>
+  </div>
+  <div class="step-content">
+    <div class="step-title">ACTUATOR — DRUG RELEASE</div>
+    <div class="step-items">
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Receives</span><span class="highlight">3.3V for 100 µs</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Opens strontium gate</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Releases</span><span class="highlight">0.5 µg Sr²⁺</span><span class="item-val">to tissue</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 6 -->
+<div class="step s6">
+  <div class="step-left">
+    <div class="step-number">6</div>
+    <div class="step-line"></div>
+  </div>
+  <div class="step-content">
+    <div class="step-title">BIOLOGICAL RESPONSE</div>
+    <div class="step-items">
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Strontium activates osteoblasts</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Macrophages</span><span class="item-val">M1</span><span class="highlight">→ M2</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Inflammation reduces</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 7 -->
+<div class="step s7">
+  <div class="step-left">
+    <div class="step-number">7</div>
+    <div class="step-line"></div>
+  </div>
+  <div class="step-content">
+    <div class="step-title">CHIP LEARNS — CLOSES THE LOOP</div>
+    <div class="step-items">
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">New pH reading:</span><span class="highlight">6.9 (improved)</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">Inference:</span><span class="item-val">"that dose worked"</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">SET pulses reinforce synapse</span><span class="highlight">→ resistance ↓</span></div>
+      <div class="item"><span class="item-arrow">└──</span><span class="item-key">O² vacancies reposition in HfO₂</span><span class="highlight">→ memory written in matter</span></div>
+    </div>
+    <div class="learn-badge">STDP LEARNING — NO EXTERNAL COMPUTER REQUIRED</div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <div class="footer">
+    Leonel Pimentel — Independent Researcher, Santa Barbara CA — 2026<br>
+    <a href="https://doi.org/10.5281/zenodo.18781514">doi: 10.5281/zenodo.18781514</a> &nbsp;|&nbsp;
+    <a href="https://github.com/perealeonel0/OsteoFlow">github.com/perealeonel0/OsteoFlow</a>
+  </div>
+</div>
+</body>
+</html>
