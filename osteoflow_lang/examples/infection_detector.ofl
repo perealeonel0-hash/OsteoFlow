@@ -1,0 +1,47 @@
+; INFECTION DETECTOR PROGRAM
+; ==========================
+; Purpose: Monitor pH and temperature,
+;          release antibiotic if infection probable.
+;
+; This is a HIGH-LEVEL program.
+; The compiler converts it to voltage pulses.
+
+; Create neurons
+NEURON 100 threshold=0.5 leak=0.01 layer=1   ; Input layer (sensors)
+NEURON 200 threshold=0.6 leak=0.01 layer=2   ; Integration layer
+NEURON 300 threshold=0.7 leak=0.01 layer=3   ; Output layer (decision)
+
+; Connect sensors (simulated - pins would connect to real sensors)
+; SENSOR id type pin gain offset
+SENSOR 0 pH pin=1 gain=1.0 offset=7.0        ; pH 7.0 = 0, pH 6.0 = 1
+SENSOR 1 TEMP pin=2 gain=0.5 offset=36.0     ; 36°C = 0, 38°C = 1
+
+; Connect sensors to input neurons
+SYNAPSE 0 100 0.9   ; pH very important
+SYNAPSE 1 100 0.5   ; temperature moderately important
+
+; Connect input to integration
+SYNAPSE 100 200 0.8
+SYNAPSE 101 200 0.6  ; if we had a second input neuron
+
+; Connect integration to output
+SYNAPSE 200 300 0.9
+
+; Decision threshold
+; IF_CURRENT neuron threshold LABEL
+IF_CURRENT 300 50uA INFECTION
+
+; Default loop
+WAIT 1000
+GOTO MAIN
+
+INFECTION:
+    RELEASE 0 0.7   ; Release antibiotic (70% dose)
+    WAIT 60000000    ; Wait 1 minute
+    RELEASE 0 0.0    ; Stop
+    GOTO MAIN
+
+MAIN:
+    LOOP
+        WAIT 1000
+    END
